@@ -1,16 +1,44 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<div th:fragment="header">
-    <link rel="stylesheet" type="text/css" media="all"
-          href="../../css/main.css" th:href="@{/css/main.css}" />
-    <div class="header" >
-        <img src="../../images/logo.png" th:src="@{/images/logo.png}"/>
-        <a href="/cart" th:href="@{/cart}">Корзина</a>
-        <a href="/contacts" th:href="@{/contacts}">Контакты</a>
-        <a href="/search" th:href="@{/search}">Поиск</a>
-        <a href="/login" th:href="@{/login}" sec:authorize="!isAuthenticated()">Вход</a>
-        <a href="/register" th:href="@{/register}" sec:authorize="!isAuthenticated()">Регистрация</a>
-        <a href="/logout" th:href="@{/logout}" sec:authorize="isAuthenticated()">Выход</a>
+    <div th:fragment="header" class="navbar navbar-header navbar-inverse navbar-fixed-top" role="navigation">
+        <!--<meta name="viewport" content="width=device-width, initial-scale=1" />-->
+
+        <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
+        <link rel="stylesheet" th:href="@{/css/bootstrap-theme.css}" />
+
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+
+        <script type="text/javascript" th:src="@{/js/jquery-3.2.1.min.js}"/>
+        <script type="text/javascript" th:src="@{/js/addToCart.js}"/>
+
+        <div class="navbar navbar-header navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Yo</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#"></a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="/catalog" th:href="@{/catalog}">Каталог</a></li>
+                        <li><a href="/cart" th:href="@{/cart}">Корзина</a></li>
+                        <li><a href="/contacts" th:href="@{/contacts}">Контакты</a></li>
+                        <li><a href="/search" th:href="@{/search}">Поиск</a></li>
+                        <li><a href="/login" th:href="@{/login}" sec:authorize="!isAuthenticated()">Вход</a></li>
+                        <li><a href="/register" th:href="@{/register}" sec:authorize="!isAuthenticated()">Регистрация</a></li>
+                        <li><a href="/logout" th:href="@{/logout}" sec:authorize="isAuthenticated()">Выход</a></li>
+                    </ul>
+                </div><!--/.nav-collapse -->
+            </div>
+        </div>
     </div>
-</div>
+
 </html>

@@ -1,14 +1,16 @@
 package org.makesense.store.controllers;
 
+import org.makesense.store.cart.Cart;
 import org.makesense.store.models.Product;
 import org.makesense.store.repository.ProductsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -32,5 +34,21 @@ public class MainController {
         Product product = repository.findByName(name);
         model.addAttribute("product", product);
         return "product";
+    }
+
+    @RequestMapping(value = "/cart", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String addToCart(HttpSession session, @RequestParam String name){
+        Product product = repository.findByName(name);
+        Cart cart = (Cart) session.getAttribute("cart");
+        if(cart==null){
+            cart = new Cart();
+            cart.add(product);
+            session.setAttribute("cart", cart);
+        }
+        else{
+            cart.add(product);
+        }
+        return "{\"cart\":\""+cart.summ()+"\"}";
     }
 }
