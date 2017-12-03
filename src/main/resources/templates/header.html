@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div th:fragment="header">
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../../css/main.css" th:href="@{/css/main.css}" />
+    <div class="header" >
+        <img src="../../images/logo.png" th:src="@{/images/logo.png}"/>
+        <a href="/cart" th:href="@{/cart}">Корзина</a>
+        <a href="/contacts" th:href="@{/contacts}">Контакты</a>
+        <a href="/search" th:href="@{/search}">Поиск</a>
+        <a href="/login" th:href="@{/login}" sec:authorize="!isAuthenticated()">Вход</a>
+        <a href="/register" th:href="@{/register}" sec:authorize="!isAuthenticated()">Регистрация</a>
+        <a href="/logout" th:href="@{/logout}" sec:authorize="isAuthenticated()">Выход</a>
+    </div>
+</div>
+</html>
