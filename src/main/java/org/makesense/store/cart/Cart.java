@@ -23,6 +23,10 @@ public class Cart {
         });
         if(toDelete[0]!=null)products.remove(toDelete[0]);
     }
+
+    public int size(){
+        return products.size();
+    }
     public double summ(){
         return products.stream().flatMapToDouble(product -> DoubleStream.of(product.getPrice())).sum();
     }

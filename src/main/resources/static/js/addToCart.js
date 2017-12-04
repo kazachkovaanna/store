@@ -5,7 +5,6 @@ function addToCart(click) {
         data: "name="+name,
         dataType: "json",
     }).done(function (response) {
-        console.log("cart:"+response.cart);
-        $("#cartValue").text(response.cart);
+        $("#cart").text("Корзина ("+response.ammount+")");
     });
 }

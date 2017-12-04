@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-    <div th:fragment="header" class="navbar navbar-header navbar-inverse navbar-fixed-top" role="navigation">
+    <th:block th:fragment="header" class="navbar navbar-header navbar-inverse navbar-fixed-top" role="navigation">
         <!--<meta name="viewport" content="width=device-width, initial-scale=1" />-->
 
         <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
@@ -28,17 +28,19 @@
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="/catalog" th:href="@{/catalog}">Каталог</a></li>
-                        <li><a href="/cart" th:href="@{/cart}">Корзина</a></li>
+                        <li class="active"><a href="/catalog" th:href="@{/}">Каталог</a></li>
+                        <li><a href="/cart" th:href="@{/cart}" id="cart">Корзина</a></li>
                         <li><a href="/contacts" th:href="@{/contacts}">Контакты</a></li>
                         <li><a href="/search" th:href="@{/search}">Поиск</a></li>
                         <li><a href="/login" th:href="@{/login}" sec:authorize="!isAuthenticated()">Вход</a></li>
-                        <li><a href="/register" th:href="@{/register}" sec:authorize="!isAuthenticated()">Регистрация</a></li>
-                        <li><a href="/logout" th:href="@{/logout}" sec:authorize="isAuthenticated()">Выход</a></li>
+                        <li><a href="/register" th:href="@{/registration}" sec:authorize="!isAuthenticated()">Регистрация</a></li>
+                        <li><a th:href="@{/logout}" sec:authorize="isAuthenticated()">Выход</a></li>
+                        <li><a th:href="@{/admin}" sec:authorize="hasAuthority('Admin')">Администрирование</a></li>
+                        <li><a th:href="@{/manage}" sec:authorize="hasAuthority('Manager')">Управление</a></li>
                     </ul>
                 </div><!--/.nav-collapse -->
             </div>
         </div>
-    </div>
+    </th:block>
 
 </html>

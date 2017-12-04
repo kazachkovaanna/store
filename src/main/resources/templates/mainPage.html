@@ -5,15 +5,17 @@
         <title>Title</title>
     </head>
     <body>
-        <div th:include="header :: header"></div>
-        <h1>СПИСОК ТОВАРОВ</h1>
-        <div th:each="product : ${products}">
-            <th:block ></th:block>
-            <a class="productLink" th:href="@{/product(name=${product.name})}"> <span class="productName" th:text="${product.name}"/></a>
-            <span th:text="${product.price}"/>
-            <button class="buyButton">Купить</button>
+        <th:block th:include="header :: header"></th:block>
+        <div class="panel">
+            <h1>СПИСОК ТОВАРОВ</h1>
+            <div th:each="product : ${products}">
+                <th:block ></th:block>
+                <a class="productLink" th:href="@{/product(name=${product.name})}"> <span class="productName" th:text="${product.name}"/></a>
+                <span th:text="${product.price}"/>
+                <button class="buyButton">Купить</button>
 
-            <br/>
+                <br/>
+            </div>
         </div>
         <script th:inline="javascript">
             $(".buyButton").click(addToCart);
