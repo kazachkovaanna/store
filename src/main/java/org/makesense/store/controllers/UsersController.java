@@ -47,33 +47,37 @@ public class UsersController {
 
     @RequestMapping(value = "/registerManager", method = RequestMethod.POST)
     public ModelAndView registerManagerAccount
-            (@ModelAttribute("user") @Valid UserDTO accountDto,
+            (@ModelAttribute("user") @Valid UserDTO userDTO,
              BindingResult result, WebRequest request, Errors errors){
         User registered = new User();
         if (!result.hasErrors()) {
-            registered = createUserAccount(accountDto, result, true);
+            registered = createUserAccount(userDTO, result, true);
         }
         if (registered == null) {
             result.rejectValue("name", "message.regError");
         }
-        if(result.hasErrors()) return new ModelAndView("registerManager", "user", accountDto);
-        return new ModelAndView("successRegister", "user", accountDto);
+        if(result.hasErrors()) {
+            ModelAndView modelAndView= new ModelAndView("registerManager", "user", userDTO);
+            //modelAndView.addObject("errors", errors);
+            return modelAndView;
+        }
+        return new ModelAndView("successRegister", "user", userDTO);
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public ModelAndView registerUserAccount
-            (@ModelAttribute("user") @Valid UserDTO accountDto,
+            (@ModelAttribute("user") @Valid UserDTO userDTO,
              BindingResult result, WebRequest request, Errors errors) {
 
         User registered = new User();
         if (!result.hasErrors()) {
-            registered = createUserAccount(accountDto, result, false);
+            registered = createUserAccount(userDTO, result, false);
         }
         if (registered == null) {
             result.rejectValue("name", "message.regError");
         }
-        if(result.hasErrors()) return new ModelAndView("registration", "user", accountDto);
-        return new ModelAndView("successRegister", "user", accountDto);
+        if(result.hasErrors()) return new ModelAndView("registration", "user", userDTO);
+        return new ModelAndView("successRegister", "user", userDTO);
     }
 
     private User createUserAccount(UserDTO accountDto, BindingResult result, boolean isManager) {

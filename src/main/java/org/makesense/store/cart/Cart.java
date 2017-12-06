@@ -1,11 +1,13 @@
 package org.makesense.store.cart;
 
+import lombok.Getter;
 import org.makesense.store.models.Product;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.DoubleStream;
 
+@Getter
 public class Cart {
     private List<Product> products;
 

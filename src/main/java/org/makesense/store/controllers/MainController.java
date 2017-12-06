@@ -44,11 +44,13 @@ public class MainController {
 //        User a = new User("admin", encoder.encode("admin"), new HashSet<Role>(Arrays.asList(roles)));
 //        usersRepository.save(a);
         List<Product> products = repository.findAll();
+        model.addAttribute("title", "Список товаров");
+        model.addAttribute("header", "Список товаров");
         model.addAttribute("products", products);
         return "mainPage";
     }
 
-    @RequestMapping(value = "/product*", method = RequestMethod.GET)
+    @RequestMapping(value = "/product", method = RequestMethod.GET)
     public String product(Model model, @RequestParam String name){
         Product product = repository.findByName(name);
         model.addAttribute("product", product);
@@ -73,8 +75,24 @@ public class MainController {
         //return "{\"cart\":\""+cart.summ()+"\"}";
     }
 
+    @RequestMapping("/cartContent")
+    public String getCartContent(Model model, HttpSession session){
+        Cart cart = (Cart) session.getAttribute("cart");
+        if(cart != null) model.addAttribute("products", cart.getProducts());
+        model.addAttribute("title", "Корзина");
+        model.addAttribute("header", "Список покупок");
+        return "mainPage";
+    }
+
     @RequestMapping("/checkout")
     public String checkout(){
         return "checkout";
+    }
+
+    @RequestMapping("/productEdit")
+    public String editProduct(Model model, @RequestParam String name){
+        Product product = repository.findByName(name);
+        model.addAttribute("product", product);
+        return "productEdit";
     }
 }

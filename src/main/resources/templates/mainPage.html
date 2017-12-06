@@ -2,12 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="UTF-8"/>
-        <title>Товары</title>
+        <title th:inline="text">[[${title}]]</title>
     </head>
     <body>
         <th:block th:include="header :: header"></th:block>
         <div class="panel">
-            <h1>СПИСОК ТОВАРОВ</h1>
+            <h1 th:inline="text">[[${header}]]</h1>
             <div th:each="product : ${products}">
                 <th:block ></th:block>
                 <a class="productLink" th:href="@{/product(name=${product.name})}"> <span class="productName" th:text="${product.name}"/></a>
