@@ -17,6 +17,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 public class UsersController {
@@ -24,7 +25,9 @@ public class UsersController {
     UserService service;
 
     @RequestMapping("/admin")
-    public String getAdminPage(){
+    public String getAdminPage(Model model){
+        List<String> managers = service.getAllUsersByRoleList("Manager");
+        model.addAttribute("managers", managers);
         return "/admin";
     }
 
@@ -34,6 +37,29 @@ public class UsersController {
         model.addAttribute("user", userDTO);
         return "/registration";
     }
+
+    @RequestMapping("/registerManager")
+    public String showRegistrationManagerForm(Model model){
+        UserDTO userDTO = new UserDTO();
+        model.addAttribute("user", userDTO);
+        return "/registerManager";
+    }
+
+    @RequestMapping(value = "/registerManager", method = RequestMethod.POST)
+    public ModelAndView registerManagerAccount
+            (@ModelAttribute("user") @Valid UserDTO accountDto,
+             BindingResult result, WebRequest request, Errors errors){
+        User registered = new User();
+        if (!result.hasErrors()) {
+            registered = createUserAccount(accountDto, result, true);
+        }
+        if (registered == null) {
+            result.rejectValue("name", "message.regError");
+        }
+        if(result.hasErrors()) return new ModelAndView("registerManager", "user", accountDto);
+        return new ModelAndView("successRegister", "user", accountDto);
+    }
+
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public ModelAndView registerUserAccount
             (@ModelAttribute("user") @Valid UserDTO accountDto,
@@ -41,20 +67,19 @@ public class UsersController {
 
         User registered = new User();
         if (!result.hasErrors()) {
-            registered = createUserAccount(accountDto, result);
+            registered = createUserAccount(accountDto, result, false);
         }
         if (registered == null) {
             result.rejectValue("name", "message.regError");
         }
         if(result.hasErrors()) return new ModelAndView("registration", "user", accountDto);
         return new ModelAndView("successRegister", "user", accountDto);
-        // rest of the implementation
     }
 
-    private User createUserAccount(UserDTO accountDto, BindingResult result) {
+    private User createUserAccount(UserDTO accountDto, BindingResult result, boolean isManager) {
         User registered = null;
         try {
-            registered = service.registerNewUser(accountDto);
+            registered = service.registerNewUser(accountDto, isManager);
         } catch (UserNameExistsException e) {
             return null;
         }

@@ -2,9 +2,23 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <title>ADIN</title>
+    <title>Администрирование</title>
 </head>
 <body>
+    <th:block th:include="header :: header"></th:block>
+    <div class="panel">
+        <h1>Менеджеры</h1>
+
+        <a class="editManagerLink" th:href="@{/registerManager}">Добавить нового менеджера</a>
+        <br/>
+        <div th:each="manager : ${managers}">
+            <th:block >
+                <span th:text="${manager}"/>
+                <a class="editManagerLink" th:href="@{/deletemanager(name=${manager})}"> Удалить</a>
+            </th:block>
+            <br/>
+        </div>
+    </div>
 
 </body>
 </html>

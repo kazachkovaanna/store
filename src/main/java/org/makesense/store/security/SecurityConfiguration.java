@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
 
 
@@ -35,10 +36,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 antMatchers("/").permitAll()
                 .antMatchers("/registration").permitAll()
                 .antMatchers("/product").permitAll()
-                //.anyRequest().anonymous().and().authorizeRequests()
-                .antMatchers("/cart", "/checkout").hasAuthority("User")
-                .antMatchers("/manage", "/admin").hasAuthority("Manager")
-                .and().formLogin().permitAll().and().csrf().csrfTokenRepository(csrfTokenRepository());
+                .antMatchers("/cart").permitAll()
+                .antMatchers( "/checkout").hasAuthority("User")
+                .antMatchers("/manage").hasAuthority("Manager")
+                .antMatchers("/admin", "/registerManager").hasAuthority("Admin")
+                .and().formLogin().permitAll().and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/").and().csrf().csrfTokenRepository(csrfTokenRepository());
     }
 
     @Bean

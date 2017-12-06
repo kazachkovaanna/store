@@ -11,6 +11,7 @@ import org.makesense.store.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +29,8 @@ public class MainController {
     private UsersRepository usersRepository;
     @Autowired
     private RolesRepository rolesRepository;
+//    @Autowired
+//    private PasswordEncoder encoder;
 
     @RequestMapping("/")
     public String mainPage(Model model){
@@ -36,9 +39,9 @@ public class MainController {
 //        repository.save(product1);
 //        repository.save(product2);
 //        Role [] roles = new Role[1];
-//        roles[0] = new Role("User");
+//        roles[0] = new Role("Admin");
 //        roles[0] = rolesRepository.save(roles[0]);
-//        User a = new User("anna", "123", new HashSet<Role>(Arrays.asList(roles)));
+//        User a = new User("admin", encoder.encode("admin"), new HashSet<Role>(Arrays.asList(roles)));
 //        usersRepository.save(a);
         List<Product> products = repository.findAll();
         model.addAttribute("products", products);
