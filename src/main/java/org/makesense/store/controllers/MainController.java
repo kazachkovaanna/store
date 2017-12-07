@@ -128,17 +128,7 @@ public class MainController {
             result.rejectValue("name", "Имя занято");
         }
         if(result.hasErrors()) return new ModelAndView("productEdit", "product", productDTO);
-        return new ModelAndView("successRegister", "product", productDTO);
-    }
-
-    @RequestMapping(value="/403")
-    public String handleErrorAccessDenied() {
-        return "error/403.html";
-    }
-
-    @RequestMapping(value="/404")
-    public String handleErrorPageNotFound() {
-        return "error/404.html";
+        return new ModelAndView("success", "product", productDTO);
     }
 
     private Product saveProduct(ProductDTO product, BindingResult result, boolean isNew) throws ProductNameExistsException, ProductNameNotExistsException {

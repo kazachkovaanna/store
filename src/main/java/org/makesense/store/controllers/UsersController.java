@@ -62,7 +62,7 @@ public class UsersController {
             //modelAndView.addObject("errors", errors);
             return modelAndView;
         }
-        return new ModelAndView("successRegister", "user", userDTO);
+        return new ModelAndView("success", "user", userDTO);
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
@@ -78,7 +78,7 @@ public class UsersController {
             result.rejectValue("email", "Email уже существует!");
         }
         if(result.hasErrors()) return new ModelAndView("registration", "user", userDTO);
-        return new ModelAndView("successRegister", "user", userDTO);
+        return new ModelAndView("success", "user", userDTO);
     }
 
     private User createUserAccount(UserDTO accountDto, BindingResult result, boolean isManager) {
