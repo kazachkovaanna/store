@@ -55,11 +55,11 @@ public class UsersController {
             registered = createUserAccount(userDTO, result, true);
         }
         if (registered == null) {
-            result.rejectValue("email", "Email уже существует!");
+            result.rejectValue("email", "email.exists");
         }
         if(result.hasErrors()) {
             ModelAndView modelAndView= new ModelAndView("registerManager", "user", userDTO);
-            //modelAndView.addObject("errors", errors);
+            modelAndView.addObject("registerLink", "registerManager");
             return modelAndView;
         }
         return new ModelAndView("success", "user", userDTO);
@@ -75,9 +75,13 @@ public class UsersController {
             registered = createUserAccount(userDTO, result, false);
         }
         if (registered == null) {
-            result.rejectValue("email", "Email уже существует!");
+            result.rejectValue("email", "email.exists");
         }
-        if(result.hasErrors()) return new ModelAndView("registration", "user", userDTO);
+        if(result.hasErrors()) {
+            ModelAndView modelAndView= new ModelAndView("registration", "user", userDTO);
+            modelAndView.addObject("registerLink", "registration");
+            return modelAndView;
+        }
         return new ModelAndView("success", "user", userDTO);
     }
 
