@@ -24,6 +24,8 @@ public class User {
         this.name = name;
         this.password = password;
         this.roles = roles;
+        this.email = email;
+        this.lastName = lastName;
     }
 
     public User(String name, String password, String email, String lastName) {
