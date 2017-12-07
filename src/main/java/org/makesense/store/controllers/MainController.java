@@ -2,7 +2,11 @@ package org.makesense.store.controllers;
 
 import org.makesense.store.cart.Cart;
 import org.makesense.store.cart.CartDTO;
+import org.makesense.store.editing.ProductNameExistsException;
+import org.makesense.store.editing.ProductNameNotExistsException;
+import org.makesense.store.editing.ProductService;
 import org.makesense.store.models.Product;
+import org.makesense.store.models.ProductDTO;
 import org.makesense.store.models.Role;
 import org.makesense.store.models.User;
 import org.makesense.store.repository.ProductsRepository;
@@ -14,9 +18,14 @@ import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -29,6 +38,8 @@ public class MainController {
     private UsersRepository usersRepository;
     @Autowired
     private RolesRepository rolesRepository;
+    @Autowired
+    private ProductService productService;
 //    @Autowired
 //    private PasswordEncoder encoder;
 
@@ -90,9 +101,46 @@ public class MainController {
     }
 
     @RequestMapping("/productEdit")
-    public String editProduct(Model model, @RequestParam String name){
+    public String editProduct(Model model, @RequestParam(required = false) String name){
         Product product = repository.findByName(name);
-        model.addAttribute("product", product);
+        ProductDTO dto;
+        if(product == null) dto = new ProductDTO();
+        else dto = new ProductDTO(product);
+        model.addAttribute("product", dto);
         return "productEdit";
+    }
+
+    @RequestMapping(value = "/saveProduct", method = RequestMethod.POST)
+    public ModelAndView handleSaveProduct(@ModelAttribute("product") @Valid ProductDTO productDTO,
+                                    BindingResult result, WebRequest request, Errors errors, @RequestParam String newProduct){
+
+        Product saved = new Product();
+        if (!result.hasErrors()) {
+            try {
+                saved = saveProduct(productDTO, result, newProduct.equals("true"));
+            } catch (ProductNameExistsException e) {
+                result.rejectValue("name", "Имя занято");
+            } catch (ProductNameNotExistsException e) {
+                result.rejectValue("name", "Имя не существует");;
+            }
+        }
+        if (saved == null) {
+            result.rejectValue("name", "Имя занято");
+        }
+        if(result.hasErrors()) return new ModelAndView("productEdit", "product", productDTO);
+        return new ModelAndView("successRegister", "product", productDTO);
+    }
+    private Product saveProduct(ProductDTO product, BindingResult result, boolean isNew) throws ProductNameExistsException, ProductNameNotExistsException {
+        if( isNew) return productService.registerNewProduct(product);
+        else return  productService.updateProduct(product);
+    }
+
+    @RequestMapping("/manage")
+    public String manage( Model model){
+        List<Product> products = repository.findAll();
+        model.addAttribute("title", "Список товаров");
+        model.addAttribute("header", "Список товаров");
+        model.addAttribute("products", products);
+        return "mainPage";
     }
 }

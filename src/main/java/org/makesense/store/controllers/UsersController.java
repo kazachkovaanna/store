@@ -54,7 +54,7 @@ public class UsersController {
             registered = createUserAccount(userDTO, result, true);
         }
         if (registered == null) {
-            result.rejectValue("name", "message.regError");
+            result.rejectValue("name", "Имя занято");
         }
         if(result.hasErrors()) {
             ModelAndView modelAndView= new ModelAndView("registerManager", "user", userDTO);
@@ -74,7 +74,7 @@ public class UsersController {
             registered = createUserAccount(userDTO, result, false);
         }
         if (registered == null) {
-            result.rejectValue("name", "message.regError");
+            result.rejectValue("name", "Имя занято");
         }
         if(result.hasErrors()) return new ModelAndView("registration", "user", userDTO);
         return new ModelAndView("successRegister", "user", userDTO);

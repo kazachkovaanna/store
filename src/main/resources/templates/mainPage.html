@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <head>
         <meta charset="UTF-8"/>
         <title th:inline="text">[[${title}]]</title>
@@ -8,12 +8,13 @@
         <th:block th:include="header :: header"></th:block>
         <div class="panel">
             <h1 th:inline="text">[[${header}]]</h1>
+            <a sec:authorize="hasAuthority('Manager')" class="productLink" th:href="@{/productEdit}"> Добавить</a>
             <div th:each="product : ${products}">
                 <th:block ></th:block>
                 <a class="productLink" th:href="@{/product(name=${product.name})}"> <span class="productName" th:text="${product.name}"/></a>
                 <span th:text="${product.price}"/>
-                <button class="buyButton">Купить</button>
-
+                <button  sec:authorize="!hasAuthority('Manager')" class="buyButton">Купить</button>
+                <a sec:authorize="hasAuthority('Manager')" class="productLink" th:href="@{/productEdit(name=${product.name})}"> Редактировать</a>
                 <br/>
             </div>
         </div>

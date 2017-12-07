@@ -12,6 +12,8 @@
         <div >
             <label>Введите имя</label>
             <input th:field="*{name}"/>
+            <p th:each="error: ${#fields.errors('name')}"
+               th:text="${error}">Validation error</p>
         </div>
         <div >
             <label >Введите пароль</label>
