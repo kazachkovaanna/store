@@ -6,8 +6,8 @@ import org.makesense.store.models.UserDTO;
 import java.util.List;
 
 public interface UserService {
-    User registerNewUser(UserDTO accountDto, boolean isManager) throws UserNameExistsException;
+    User registerNewUser(UserDTO accountDto, boolean isManager) throws EmailExistsException;
 
-    List<String> getAllUsersByRoleList(String role);
+    List<UserDTO> getAllUsersByRoleList(String role);
 
 }

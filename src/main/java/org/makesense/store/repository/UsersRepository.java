@@ -9,4 +9,5 @@ import java.util.List;
 public interface UsersRepository extends MongoRepository<User, String> {
     public User findByName(String name);
     public List<User> findUsersByRolesIsContaining(Role role);
+    public User findByEmail(String email);
 }

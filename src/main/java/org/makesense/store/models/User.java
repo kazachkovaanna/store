@@ -16,17 +16,21 @@ public class User {
     private String id;
     private String name;
     private String password;
+    private String lastName;
+    private String email;
     private Set<Role> roles;
 
-    public User(String name, String password, Set<Role> roles) {
+    public User(String name, String password, String email, String lastName, Set<Role> roles) {
         this.name = name;
         this.password = password;
         this.roles = roles;
     }
 
-    public User(String name, String password) {
+    public User(String name, String password, String email, String lastName) {
         this.name = name;
         this.password = password;
+        this.email = email;
+        this.lastName = lastName;
         roles = new HashSet<>();
     }
     public void addRole(Role role){

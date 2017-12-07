@@ -15,7 +15,9 @@
         <br/>
         <div th:each="manager : ${managers}">
             <th:block >
-                <span th:text="${manager}"/>
+                <span th:text="${manager.name}"/>
+                <span th:text="${manager.lastName}"/>
+                <span th:text="${manager.email}"/>
                 <a class="editManagerLink" th:href="@{/deletemanager(name=${manager})}"> Удалить</a>
             </th:block>
             <br/>

@@ -23,9 +23,9 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder encoder;
 
     @Override
-    public User registerNewUser(UserDTO accountDto, boolean isManager) throws UserNameExistsException{
-        if(usersRepository.findByName(accountDto.getName())!= null)
-            throw new UserNameExistsException("Such user already exists!");
+    public User registerNewUser(UserDTO accountDto, boolean isManager) throws EmailExistsException{
+        if(usersRepository.findByEmail(accountDto.getEmail())!= null)
+            throw new EmailExistsException("email занят!");
         Role role;
         String roleName;
         if(isManager){
@@ -36,14 +36,14 @@ public class UserServiceImpl implements UserService {
         }
         role = rolesRepository.findByRole(roleName);
         if(role==null) role = rolesRepository.save(new Role(roleName));
-        User user = new User(accountDto.getName(), encoder.encode(accountDto.getPassword()));
+        User user = new User(accountDto.getName(), encoder.encode(accountDto.getPassword()), accountDto.getEmail(), accountDto.getLastName());
         user.addRole(role);
         return usersRepository.save(user);
     }
 
     @Override
-    public List<String> getAllUsersByRoleList(String role) {
+    public List<UserDTO> getAllUsersByRoleList(String role) {
         Role role1 = rolesRepository.findByRole(role);
-        return usersRepository.findUsersByRolesIsContaining(role1).stream().flatMap(user -> Stream.of(user.getName())).collect(Collectors.toList());
+        return usersRepository.findUsersByRolesIsContaining(role1).stream().flatMap(user -> Stream.of(new UserDTO(user))).collect(Collectors.toList());
     }
 }

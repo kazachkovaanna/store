@@ -2,10 +2,9 @@ package org.makesense.store.controllers;
 
 import org.makesense.store.models.User;
 import org.makesense.store.models.UserDTO;
-import org.makesense.store.registration.UserNameExistsException;
+import org.makesense.store.registration.EmailExistsException;
 import org.makesense.store.registration.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,7 +25,7 @@ public class UsersController {
 
     @RequestMapping("/admin")
     public String getAdminPage(Model model){
-        List<String> managers = service.getAllUsersByRoleList("Manager");
+        List<UserDTO> managers = service.getAllUsersByRoleList("Manager");
         model.addAttribute("managers", managers);
         return "/admin";
     }
@@ -35,6 +34,7 @@ public class UsersController {
     public String showRegistrationForm(Model model){
         UserDTO userDTO = new UserDTO();
         model.addAttribute("user", userDTO);
+        model.addAttribute("registerLink", "registration");
         return "/registration";
     }
 
@@ -42,7 +42,8 @@ public class UsersController {
     public String showRegistrationManagerForm(Model model){
         UserDTO userDTO = new UserDTO();
         model.addAttribute("user", userDTO);
-        return "/registerManager";
+        model.addAttribute("registerLink", "registerManager");
+        return "/registration";
     }
 
     @RequestMapping(value = "/registerManager", method = RequestMethod.POST)
@@ -54,7 +55,7 @@ public class UsersController {
             registered = createUserAccount(userDTO, result, true);
         }
         if (registered == null) {
-            result.rejectValue("name", "Имя занято");
+            result.rejectValue("email", "Email уже существует!");
         }
         if(result.hasErrors()) {
             ModelAndView modelAndView= new ModelAndView("registerManager", "user", userDTO);
@@ -74,7 +75,7 @@ public class UsersController {
             registered = createUserAccount(userDTO, result, false);
         }
         if (registered == null) {
-            result.rejectValue("name", "Имя занято");
+            result.rejectValue("email", "Email уже существует!");
         }
         if(result.hasErrors()) return new ModelAndView("registration", "user", userDTO);
         return new ModelAndView("successRegister", "user", userDTO);
@@ -84,7 +85,7 @@ public class UsersController {
         User registered = null;
         try {
             registered = service.registerNewUser(accountDto, isManager);
-        } catch (UserNameExistsException e) {
+        } catch (EmailExistsException e) {
             return null;
         }
         return registered;
