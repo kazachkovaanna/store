@@ -3,16 +3,23 @@
 <head>
     <meta charset="UTF-8"/>
     <title th:text="${product.name}"></title>
-</head>
-<body>
-<div th:include="header :: header"></div>
-<h1 th:inline="text">ТОВАР [[${product.name}]]</h1>
-<a th:href="@{/}">Назад</a>
-<span th:inline="text">Название: [[${product.name}]]</span><br/>
-<span th:inline="text">Краткое описание: [[${product.shortDescription}]]</span><br/>
-<span th:inline="text">Полное описание: [[${product.fullDescription}]]</span><br/>
-<span th:inline="text">Цена: [[${product.price}]]</span><br/>
-<span th:inline="text">Количество на складе: [[${product.ammount}]]</span><br/>
 
-</body>
+    <th:block th:include="header :: head"></th:block>
+</head>
+    <body>
+        <th:block th:include="header :: body"></th:block>
+
+        <h1 th:inline="text">
+            ТОВАР [[${product.name}]]
+        </h1>
+        <a th:href="@{/}">
+            Назад
+        </a>
+        <span th:inline="text">Название: [[${product.name}]]</span><br/>
+        <span th:inline="text">Краткое описание: [[${product.shortDescription}]]</span><br/>
+        <span th:inline="text">Полное описание: [[${product.fullDescription}]]</span><br/>
+        <span th:inline="text">Цена: [[${product.price}]]</span><br/>
+        <span th:inline="text">Количество на складе: [[${product.ammount}]]</span><br/>
+
+    </body>
 </html>

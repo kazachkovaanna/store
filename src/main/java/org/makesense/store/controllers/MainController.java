@@ -130,6 +130,17 @@ public class MainController {
         if(result.hasErrors()) return new ModelAndView("productEdit", "product", productDTO);
         return new ModelAndView("successRegister", "product", productDTO);
     }
+
+    @RequestMapping(value="/403")
+    public String handleErrorAccessDenied() {
+        return "error/403.html";
+    }
+
+    @RequestMapping(value="/404")
+    public String handleErrorPageNotFound() {
+        return "error/404.html";
+    }
+
     private Product saveProduct(ProductDTO product, BindingResult result, boolean isNew) throws ProductNameExistsException, ProductNameNotExistsException {
         if( isNew) return productService.registerNewProduct(product);
         else return  productService.updateProduct(product);

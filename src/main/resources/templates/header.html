@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-    <th:block th:fragment="header" class="navbar navbar-header navbar-inverse navbar-fixed-top" role="navigation">
-        <!--<meta name="viewport" content="width=device-width, initial-scale=1" />-->
-
+    <th:block th:fragment="head" role="navigation">
         <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
         <link rel="stylesheet" th:href="@{/css/bootstrap-theme.css}" />
 
@@ -11,7 +9,10 @@
 
         <script type="text/javascript" th:src="@{/js/jquery-3.2.1.min.js}"/>
         <script type="text/javascript" th:src="@{/js/addToCart.js}"/>
+    </th:block>
 
+    <th:block th:fragment="body" class="navbar navbar-header navbar-inverse navbar-fixed-top" role="navigation">
+        <!--<meta name="viewport" content="width=device-width, initial-scale=1" />-->
         <div class="navbar navbar-header navbar-inverse navbar-fixed-top" role="navigation">
             <div class="container">
                 <div class="navbar-header">
@@ -28,7 +29,7 @@
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="/catalog" th:href="@{/}">Каталог</a></li>
+                        <li><a href="/catalog" th:href="@{/}">Каталог</a></li>
                         <li><a href="/cartContent" th:href="@{/cartContent}" id="cart">Корзина</a></li>
                         <li><a href="/contacts" th:href="@{/contacts}">Контакты</a></li>
                         <li><a href="/search" th:href="@{/search}">Поиск</a></li>
