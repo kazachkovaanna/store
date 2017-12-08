@@ -7,3 +7,59 @@ body{
     float: right;
 
 }
+
+.main-section {
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+  margin-bottom: 0;
+  background-color: #fff;
+}
+
+.main-section p:last-child {
+  margin-bottom: 0;
+}
+
+.main-section-heading {
+  font-weight: 300;
+}
+
+.main-section .container {
+  max-width: 60%;
+}
+
+.album {
+  min-height: 50rem; /* Can be removed; just added for demo purposes */
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  background-color: #f7f7f7;
+}
+
+.card {
+  float: left;
+  width: 33.333%;
+  padding: .75rem;
+  margin-bottom: 2rem;
+  border: 0;
+}
+
+.card > img {
+  margin-bottom: .75rem;
+}
+
+.card-text {
+  font-size: 85%;
+}
+
+.product-img {
+    width: 100%;
+}
+
+.product-img-full {
+    width: 60%;
+    margin-left: 20%;
+    margin-right: 5%;
+}
+
+.buy-btn-large {
+    width: 100%;
+}
