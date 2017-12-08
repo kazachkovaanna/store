@@ -37,7 +37,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/registration").permitAll()
                 .antMatchers("/product").permitAll()
                 .antMatchers("/cart").permitAll()
-                .antMatchers( "/checkout").hasAuthority("User")
+                .antMatchers("/cartContent").permitAll()
+                .antMatchers("/productEdit", "/saveProduct").hasAuthority("Manaer")
+                .antMatchers( "/order").hasAuthority("User")
                 .antMatchers("/manage").hasAuthority("Manager")
                 .antMatchers("/admin", "/registerManager").hasAuthority("Admin")
                 .and().formLogin().loginPage("/login").defaultSuccessUrl("/").permitAll().and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/").and().csrf().csrfTokenRepository(csrfTokenRepository());

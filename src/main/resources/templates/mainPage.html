@@ -8,9 +8,9 @@
 
         <th:block th:include="header :: head"></th:block>
 
-        <script th:inline="javascript">
-            $(".buy-btn").click(addToCart);
-        </script>
+        <!--<script th:inline="javascript">-->
+            <!--$(".buy-btn").click(addToCart);-->
+        <!--</script>-->
     </head>
     <body>
         <th:block th:include="header :: body"></th:block>
@@ -20,7 +20,8 @@
             <section class="main-section text-center">
                 <div class="container">
                     <h1 class="main-section-heading">Список товаров</h1>
-                    <p class="lead text-muted">Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don't simply skip over it entirely.</p>
+                    <p class="lead text-muted" th:text="${text}">Товары</p>
+                    <button class="buy-btn-large btn btn-primary" th:text="Заказать" th:if="${cart}" onclick="location.href ='/order'"></button>
                 </div>
             </section>
 
@@ -46,5 +47,8 @@
                 </div>
             </div>
         </main>
+        <script th:inline="javascript">
+            $(".buy-btn").click(addToCart);
+        </script>
     </body>
 </html>

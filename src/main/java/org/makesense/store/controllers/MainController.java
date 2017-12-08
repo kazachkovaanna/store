@@ -5,10 +5,8 @@ import org.makesense.store.cart.CartDTO;
 import org.makesense.store.editing.ProductNameExistsException;
 import org.makesense.store.editing.ProductNameNotExistsException;
 import org.makesense.store.editing.ProductService;
-import org.makesense.store.models.Product;
-import org.makesense.store.models.ProductDTO;
-import org.makesense.store.models.Role;
-import org.makesense.store.models.User;
+import org.makesense.store.models.*;
+import org.makesense.store.repository.OrdersRepository;
 import org.makesense.store.repository.ProductsRepository;
 import org.makesense.store.repository.RolesRepository;
 import org.makesense.store.repository.UsersRepository;
@@ -18,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.Ordered;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -50,6 +49,8 @@ public class MainController {
     @Autowired
     private ProductService productService;
     @Autowired
+    private OrdersRepository ordersRepository;
+    @Autowired
     private PasswordEncoder encoder;
     @Autowired
     private ImagesStorage storageService;
@@ -73,6 +74,7 @@ public class MainController {
         model.addAttribute("title", "Список товаров");
         model.addAttribute("header", "Список товаров");
         model.addAttribute("products", products);
+        model.addAttribute("text", "Наш магазин рад предложит вам следующие товары:");
         return "mainPage";
     }
 
@@ -112,13 +114,11 @@ public class MainController {
         if(cart != null) model.addAttribute("products", cart.getProducts());
         model.addAttribute("title", "Корзина");
         model.addAttribute("header", "Список покупок");
+        model.addAttribute("text", "Вы собираетесь купить:");
+        model.addAttribute("cart", "true");
         return "mainPage";
     }
 
-    @RequestMapping("/checkout")
-    public String checkout(){
-        return "checkout";
-    }
 
     @RequestMapping("/productEdit")
     public String editProduct(Model model, @RequestParam(required = false) String name){
@@ -167,5 +167,17 @@ public class MainController {
         return "mainPage";
     }
 
+    @RequestMapping("/order")
+    public String order(HttpSession session, Authentication auth){
+        Cart cart = (Cart) session.getAttribute("cart");
+        String user = auth.getName();
+        if(cart!= null && user != null & !user.equals("")){
+            Order order = new Order(user, cart.getProducts());
+            ordersRepository.save(order);
+            session.removeAttribute("cart");
+            session.invalidate();
+        }
+        return "redirect:/";
+    }
 
 }
