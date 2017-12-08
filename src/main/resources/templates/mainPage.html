@@ -1,65 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <head>
-        <style type="text/css">
-            .main-section {
-              padding-top: 6rem;
-              padding-bottom: 6rem;
-              margin-bottom: 0;
-              background-color: #fff;
-            }
-
-            .main-section p:last-child {
-              margin-bottom: 0;
-            }
-
-            .main-section-heading {
-              font-weight: 300;
-            }
-
-            .main-section .container {
-              max-width: 60%;
-            }
-
-            .album {
-              min-height: 50rem; /* Can be removed; just added for demo purposes */
-              padding-top: 3rem;
-              padding-bottom: 3rem;
-              background-color: #f7f7f7;
-            }
-
-            .card {
-              float: left;
-              width: 33.333%;
-              padding: .75rem;
-              margin-bottom: 2rem;
-              border: 0;
-            }
-
-            .card > img {
-              margin-bottom: .75rem;
-            }
-
-            .card-text {
-              font-size: 85%;
-            }
-
-            .product-img {
-                width: 100%;
-            }
-
-            .buyButton {
-                width: 100%;
-            }
-        </style>
         <meta charset="UTF-8"/>
         <title th:inline="text">[[${title}]]</title>
 
+        <link rel="stylesheet" th:href="@{/css/main.css}" />
+
         <th:block th:include="header :: head"></th:block>
 
-
         <script th:inline="javascript">
-            $(".buyButton").click(addToCart);
+            $(".buy-btn").click(addToCart);
         </script>
     </head>
     <body>
@@ -78,7 +28,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="card" th:each="product : ${products}">
-                            <a class="productLink" th:href="@{/product(name=${product.name})}">
+                            <a class="product-link" th:href="@{/product(name=${product.name})}">
                                 <h3 class="card-title" th:inline="text">[[${product.name}]]</h3>
                                 <!-- todo change img to card img -->
                                 <img class="product-img" src="images/logo.png" alt="Card image cap" />
@@ -86,7 +36,9 @@
                                     <!-- todo short msg if need -->
                                 </p>
                             </a>
-                            <button sec:authorize="!hasAuthority('Manager')" class="buyButton btn btn-primary" th:inline="text">
+                            <button sec:authorize="!hasAuthority('Manager')"
+                                    class="buy-btn buy-btn-large btn btn-primary"
+                                    th:inline="text">
                                 [[${product.price}]] &#8381;
                             </button>
                         </div>

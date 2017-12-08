@@ -1,25 +1,37 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8"/>
     <title th:text="${product.name}"></title>
 
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
+
     <th:block th:include="header :: head"></th:block>
+
 </head>
     <body>
         <th:block th:include="header :: body"></th:block>
 
-        <h1 th:inline="text">
-            ТОВАР [[${product.name}]]
-        </h1>
-        <a th:href="@{/}">
-            Назад
-        </a>
-        <span th:inline="text">Название: [[${product.name}]]</span><br/>
-        <span th:inline="text">Краткое описание: [[${product.shortDescription}]]</span><br/>
-        <span th:inline="text">Полное описание: [[${product.fullDescription}]]</span><br/>
-        <span th:inline="text">Цена: [[${product.price}]]</span><br/>
-        <span th:inline="text">Количество на складе: [[${product.ammount}]]</span><br/>
+        <!--<span th:inline="text">Количество на складе: [[${product.ammount}]]</span><br/>-->
+
+        <main role="main">
+
+            <section class="main-section text-center">
+                <div class="container">
+                    <h1 class="main-section-heading" th:inline="text">[[${product.name}]]</h1>
+                    <p class="lead text-muted" th:inline="text">[[${product.shortDescription}]]</p>
+                </div>
+            </section>
+
+            <div class="container">
+
+                <img class="product-img-full" src="images/logo.png" />
+
+                <button sec:authorize="!hasAuthority('Manager')" class="buy-btn btn btn-primary" th:inline="text">
+                    [[${product.price}]] &#8381;
+                </button>
+            </div>
+        </main>
 
     </body>
 </html>
