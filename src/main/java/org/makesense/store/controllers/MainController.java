@@ -61,15 +61,6 @@ public class MainController {
 
     @RequestMapping("/")
     public String mainPage(Model model){
-//        Product product1 = new Product(null, "Product 1", "sdescr1", "fdescr1", null, 123.02, 0, null, "Test", null, 12);
-//        Product product2 = new Product(null, "Product 2", "sdescr2", "fdescr2", null, 148.02, 0, null, "Test", null, 3);
-//        repository.save(product1);
-//        repository.save(product2);
-//        Role [] roles = new Role[1];
-//        roles[0] = new Role("Admin");
-//        roles[0] = rolesRepository.save(roles[0]);
-//        User a = new User("admin", encoder.encode("admin"), "admin@sense.org", "Adminskiy", new HashSet<Role>(Arrays.asList(roles)));
-//        usersRepository.save(a);
         List<Product> products = repository.findAll();
         model.addAttribute("title", "Список товаров");
         model.addAttribute("header", "Список товаров");
