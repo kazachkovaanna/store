@@ -40,7 +40,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers( "/checkout").hasAuthority("User")
                 .antMatchers("/manage").hasAuthority("Manager")
                 .antMatchers("/admin", "/registerManager").hasAuthority("Admin")
-                .and().formLogin().permitAll().and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/").and().csrf().csrfTokenRepository(csrfTokenRepository());
+                .and().formLogin().loginPage("/login").defaultSuccessUrl("/").permitAll().and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/").and().csrf().csrfTokenRepository(csrfTokenRepository());
     }
 
     @Bean

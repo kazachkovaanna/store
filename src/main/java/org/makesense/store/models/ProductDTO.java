@@ -11,8 +11,10 @@ public class ProductDTO {
     private String name;
     private String shortDescription;
     private String fullDescription;
+    private String image;
     private Double price;
     private Integer ammount;
+    private String imageBytes;
 
     public ProductDTO(Product product){
         name = product.getName();
@@ -20,5 +22,6 @@ public class ProductDTO {
         fullDescription = product.getFullDescription();
         price = product.getPrice();
         ammount = product.getAmmount();
+        imageBytes = product.getImageBytes();
     }
 }

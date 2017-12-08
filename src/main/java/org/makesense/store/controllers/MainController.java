@@ -12,7 +12,10 @@ import org.makesense.store.models.User;
 import org.makesense.store.repository.ProductsRepository;
 import org.makesense.store.repository.RolesRepository;
 import org.makesense.store.repository.UsersRepository;
+import org.makesense.store.storage.ImagesStorage;
+import org.makesense.store.storage.StorageException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.Ordered;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,10 +25,16 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -42,6 +51,12 @@ public class MainController {
     private ProductService productService;
     @Autowired
     private PasswordEncoder encoder;
+    @Autowired
+    private ImagesStorage storageService;
+    @Autowired
+    ServletContext servletContext;
+
+
 
     @RequestMapping("/")
     public String mainPage(Model model){
@@ -49,16 +64,21 @@ public class MainController {
 //        Product product2 = new Product(null, "Product 2", "sdescr2", "fdescr2", null, 148.02, 0, null, "Test", null, 3);
 //        repository.save(product1);
 //        repository.save(product2);
-        Role [] roles = new Role[1];
-        roles[0] = new Role("Admin");
-        roles[0] = rolesRepository.save(roles[0]);
-        User a = new User("admin", encoder.encode("admin"), "admin@sense.org", "Adminskiy", new HashSet<Role>(Arrays.asList(roles)));
-        usersRepository.save(a);
+//        Role [] roles = new Role[1];
+//        roles[0] = new Role("Admin");
+//        roles[0] = rolesRepository.save(roles[0]);
+//        User a = new User("admin", encoder.encode("admin"), "admin@sense.org", "Adminskiy", new HashSet<Role>(Arrays.asList(roles)));
+//        usersRepository.save(a);
         List<Product> products = repository.findAll();
         model.addAttribute("title", "Список товаров");
         model.addAttribute("header", "Список товаров");
         model.addAttribute("products", products);
         return "mainPage";
+    }
+
+    @RequestMapping("/login")
+    public String loginPage(){
+        return "login";
     }
 
     @RequestMapping(value = "/product", method = RequestMethod.GET)
@@ -111,17 +131,19 @@ public class MainController {
     }
 
     @RequestMapping(value = "/saveProduct", method = RequestMethod.POST)
-    public ModelAndView handleSaveProduct(@ModelAttribute("product") @Valid ProductDTO productDTO,
-                                    BindingResult result, WebRequest request, Errors errors, @RequestParam String newProduct){
-
+    public ModelAndView handleSaveProduct(@RequestParam("file") MultipartFile file, @ModelAttribute("product") @Valid ProductDTO productDTO,
+                                          BindingResult result, MultipartHttpServletRequest request, Errors errors, @RequestParam String newProduct) {
         Product saved = new Product();
         if (!result.hasErrors()) {
             try {
+                if(file!= null) storageService.store(file, productDTO);
                 saved = saveProduct(productDTO, result, newProduct.equals("true"));
             } catch (ProductNameExistsException e) {
-                result.rejectValue("name", "Имя занято");
+                result.rejectValue("name", "name.occupied");
             } catch (ProductNameNotExistsException e) {
-                result.rejectValue("name", "Имя не существует");;
+                result.rejectValue("name", "name.not.exists");;
+            } catch (IOException e) {
+                result.rejectValue("image", "image.error");
             }
         }
         if (saved == null) {
@@ -144,4 +166,6 @@ public class MainController {
         model.addAttribute("products", products);
         return "mainPage";
     }
+
+
 }

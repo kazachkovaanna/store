@@ -22,6 +22,7 @@ public class Product {
     private String category;
     private String sales;
     private Integer ammount;
+    private String imageBytes;
 
     public Product(String image, String name, String shortDescription, String fullDescription, String parameters, Double price, Integer rating, String[] tags, String category, String sales, Integer ammount) {
         this.image = image;
