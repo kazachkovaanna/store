@@ -25,7 +25,7 @@
 
             <div class="container">
 
-                <img class="product-img-full" src="images/logo.png" />
+                <img class="product-img-full" th:src="@{'data:image/jpeg;base64,'+${product.imageBytes}}" />
 
                 <button sec:authorize="!hasAuthority('Manager')" class="buy-btn btn btn-primary" th:inline="text">
                     [[${product.price}]] &#8381;

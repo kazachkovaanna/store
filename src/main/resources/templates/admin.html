@@ -1,28 +1,36 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8"/>
-    <title>Администрирование</title>
+    <head>
+        <meta charset="UTF-8"/>
+        <title>Администрирование</title>
 
-    <th:block th:include="header :: head"></th:block>
-</head>
-<body>
-    <th:block th:include="header :: body"></th:block>
-    <div class="panel">
-        <h1>Менеджеры</h1>
+        <link rel="stylesheet" th:href="@{/css/main.css}" />
 
-        <a class="editManagerLink" th:href="@{/registerManager}">Добавить нового менеджера</a>
-        <br/>
-        <div th:each="manager : ${managers}">
-            <th:block >
-                <span th:text="${manager.name}"/>
-                <span th:text="${manager.lastName}"/>
-                <span th:text="${manager.email}"/>
-                <a class="editManagerLink" th:href="@{/deletemanager(name=${manager})}"> Удалить</a>
-            </th:block>
-            <br/>
-        </div>
-    </div>
+        <th:block th:include="header :: head"></th:block>
+    </head>
+    <body>
+        <th:block th:include="header :: body"></th:block>
 
-</body>
+        <main role="main">
+            <section class="main-section text-center">
+                <div class="container">
+                    <h1 class="main-section-heading" th:inline="text">Менеджеры</h1>
+                </div>
+            </section>
+
+            <div class="container">
+                <a class="btn btn-primary" th:href="@{/registerManager}">Добавить нового менеджера</a>
+
+                <div class="manager-list" th:each="manager : ${managers}">
+                    <div class="manager-block">
+                        <input class="form-control" type="text" readonly="readonly" style="width:20%; text-align: center; margin-right: 10px; float:left;" th:value="${manager.name}" />
+                        <input class="form-control" type="text" readonly="readonly" style="width:20%; text-align: center; margin-right: 10px; float:left;" th:value="${manager.lastName}" />
+                        <input class="form-control" type="text" readonly="readonly" style="width:40%; text-align: center; margin-right: 10px; float:left;" th:value="${manager.email}" />
+
+                        <a class="btn btn-primary" th:href="@{/deletemanager(name=${manager})}"> Удалить</a>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </body>
 </html>

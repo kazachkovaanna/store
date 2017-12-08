@@ -31,12 +31,12 @@
                             <a class="product-link" th:href="@{/product(name=${product.name})}">
                                 <h3 class="card-title" th:inline="text">[[${product.name}]]</h3>
                                 <!-- todo change img to card img -->
-                                <img class="product-img" th:src="@{'data:image/jpeg;base64,'+${product.imageBytes}}" alt="Card image cap" />
+                                <img class="product-img" th:src="@{'data:image/jpeg;base64,'+${product.imageBytes}}" alt="Изображение отсутствует" />
                                 <p class="card-text" th:inline="text">
                                     <!-- todo short msg if need -->
                                 </p>
                             </a>
-                            <button sec:authorize="!hasAuthority('Manager')"
+                            <button sec:authorize="hasAuthority('User')"
                                     class="buy-btn buy-btn-large btn btn-primary"
                                     th:inline="text">
                                 [[${product.price}]] &#8381;

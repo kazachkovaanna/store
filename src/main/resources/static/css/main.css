@@ -63,3 +63,13 @@ body{
 .buy-btn-large {
     width: 100%;
 }
+
+.manager-list {
+    margin-top: 20px;
+}
+
+.manager-block {
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
